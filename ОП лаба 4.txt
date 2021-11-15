@@ -1,0 +1,158 @@
+#include <iostream>
+#include <ctime>
+#define P2 
+#define size 5
+
+using namespace std;
+
+#ifdef P1 
+
+void AvgPerColumn(int *pArr[]) {
+
+    int AvgArr[size];
+    int SumOfColumn;
+
+    for (int j = 0; j < size; j++)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            SumOfColumn += pArr[i][j];            // считаю сумму всех элементов колонки
+        }
+
+        AvgArr[j] = SumOfColumn / size;           // эту сумму делю на размер матрицы и записываю в одномерный массив
+        cout << "    " << AvgArr[j];              // вывожу новый массив
+
+        SumOfColumn = 0;                          // а это чтобы ресетнуть значение, а то цифры в космос уйдут 
+    }
+     
+}
+
+
+int main() {
+
+    srand(time(0));
+
+    int arr[size][size];
+    int AvgArr[size];
+    int SumOfColumn;
+
+    cout << "Array:" << endl;
+
+    for(int i = 0; i < size; ++i) 
+    {
+        for(int j = 0; j < size; ++j)
+        {
+            arr[i][j] = (rand() % 5 + 1) ;              // заполняю и вывожу массив
+            cout << "    " << arr[i][j];
+        }
+        cout << endl;
+    }
+   
+    cout << endl << "Average per column: " << endl;         // среднее каждой колонки 
+
+    int *pArr[size];                                      
+    for (int i = 0; i < size; i++)
+    {
+        pArr[i] = arr[i];
+    }
+
+
+    AvgPerColumn(pArr);
+
+    return 0;
+}
+
+#endif P1
+
+
+#ifdef P2
+
+int Min(int *pArr[]){
+    int min = 0;
+    int negMin = -1000;
+    int pozMin = 1000;
+
+    for (int i = 0; i < size; i++)      // находим минимальный элемент по модулю
+    {       
+        for (int j = 0; j < size; j++)
+        {
+            if(((i < j) || (i == j)) && ((pArr[i][j] < pozMin) && (pArr[i][j] >= 0)))  // ищу минимальное значение со знаком +
+                pozMin = pArr[i][j];  
+            else if (((i < j) || (i == j)) && ((pArr[i][j] > negMin) && (pArr[i][j] <= 0)))  // ищу минимальное значение со знаком -
+                negMin = pArr[i][j];
+        }
+    }
+/*  Проверял, чтобы понять, что все работает ок. Все работает ок.
+    cout << endl << "-min: " << negMin << endl;
+    cout << "+min: " << pozMin << endl;
+*/
+    if(abs(negMin) < pozMin){
+        min = negMin;
+    }
+    else {
+        min = pozMin;
+    }
+
+    return min;
+}
+
+int Max(int *pArr[]){
+    int max = 0;
+    int negMax = 0;
+    int pozMax = 0;
+
+    for (int i = 0; i < size; i++)      // находим максимальный элемент
+    {       
+        for (int j = 0; j < size; j++)
+        {
+            if(((i < j) || (i == j)) && (pArr[i][j] > pozMax))
+                pozMax = pArr[i][j];   
+            else if(((i < j) || (i == j)) && (pArr[i][j] < negMax))
+                negMax = pArr[i][j];
+        }
+    }
+/*  Проверял, чтобы понять, что все работает ок. Все работает ок.
+    cout << endl << "-max: " << negMax << endl;
+    cout << "+max: " << pozMax << endl;
+*/
+    if(abs(negMax) < pozMax){
+        max = pozMax;
+    }
+    else {
+        max = negMax;
+    }
+
+    return max;
+}
+
+
+int main(){
+
+    srand(time(0));
+
+    int arr[size][size];
+    cout << "Array:" << endl;
+
+    for(int i = 0; i < size; ++i) 
+    {
+        for(int j = 0; j < size; ++j)
+        {
+            arr[i][j] = (rand() % 50 - 25) ;              // заполняю и вывожу массив
+            printf("%8d", arr[i][j]);
+        }
+        cout << endl;
+    }
+
+    int *pArr[size];                            // перелаем указателю местоположение ячеек памяти массива arr[]
+    for (int i = 0; i < size; i++) {
+        pArr[i] = arr[i];
+    }
+    
+
+    cout << "|Min|: " << Min(pArr) << endl;
+    cout << "|Max|: " << Max(pArr) << endl;
+
+    return 0;
+}
+
+#endif P2
