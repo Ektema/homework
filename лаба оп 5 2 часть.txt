@@ -1,0 +1,124 @@
+#include <iostream>
+#include <ctime>
+#include <iomanip>
+#include <string>
+#include <windows.h>
+
+using namespace std;
+
+void FillArray(float *arr, int rows, int cols) //заполняет массив
+{
+    for(int i = 0; i < rows; i++)
+    {
+        for(int j = 0;j < cols;j++)
+        {
+            *(arr + (rows * i + j)) = float(rand() % 20 - 10)/2;
+        }
+    }
+}
+
+void ShowArray(float *arr,int rows,int cols) //вывод массива
+{
+    for(int i = 0; i < rows; i++)
+    {
+        for(int j = 0; j < cols; j++)
+        {
+            cout << setw (8) << setprecision(3) << *(arr + (rows * i + j)) <<' ';
+        }
+        cout << endl;
+    }
+}
+
+void negArr(float *arr, int rows, int cols) //ишет отрицательные элементы массива
+{
+    int counter = 0;
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; ++j)
+        {
+            if(*(arr + (rows * i + j)) > 0)
+                counter++;
+        }
+    }
+
+    float **negptr = new float* [counter];
+
+
+    int l = 0;
+    for (int i = 0; i < rows; ++i)
+    {
+        for (int j = 0; j < cols; ++j)
+        {
+            if(*(arr + (rows * i + j)) < 0)   //отвечает за +-
+            {
+                negptr[l] = (arr + (rows * i + j));  // записывает в массив отрицательные значения
+                cout << negptr[l] << '\t';  // выводит отрицательные
+                l++;
+            }
+        }
+    }
+
+    delete [] negptr;
+    negptr = nullptr;
+}
+
+
+int main()
+{
+    SetConsoleOutputCP(CP_UTF8);
+    setlocale(LC_CTYPE, "ru");
+    srand(time(0));
+
+    cout << "Введите количество строк: " << endl;
+    int rows;
+    cin >> rows;
+
+    cout << "Введите количество столбцов: " << endl;
+    int cols;
+    cin >> cols;
+
+    if (rows < 0 or cols < 0)    //проверка
+    {
+        cout << "Ошибка" << endl;
+        cout << "Введите количество строк:" << endl;
+        int rows;
+        cin >> rows;
+
+        cout << "Введите количество столбцов:" << endl;
+        int cols;
+        cin >> cols;
+        cout << endl;
+        float *arr = new float[rows * cols];
+
+        FillArray(arr, rows, cols);
+
+        cout << "Наш массив" << endl;
+        ShowArray(arr, rows, cols);
+        cout << endl;
+        cout << "Указатели на отрицательные элементы массива" << endl;
+        negArr(arr, rows, cols);
+        cout << endl;
+        delete[] arr;
+        arr = nullptr;
+    }
+    else {
+        cout << endl;
+        float *arr = new float[rows * cols];
+        FillArray(arr, rows, cols); //заполняем
+
+        cout << "Наш массив" << endl;
+        ShowArray(arr, rows, cols); //показываем
+        cout << endl;
+        cout << "Указатели на отрицательные элементы массива" << endl;
+        negArr(arr, rows, cols); //ищем отрицательные и выводим
+        cout << endl;
+
+        delete[] arr;
+        arr = nullptr;
+    }
+    return 0;
+}
+
+// for (int i = 0; i < n; ++i)
+//    for (int j = 0; j < n; ++j)
+// над главной диаганалью
