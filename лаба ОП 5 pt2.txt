@@ -32,11 +32,11 @@ void ShowArray(float *arr,int rows,int cols) //вывод массива
 void negArr(float *arr, int rows, int cols) //ишет отрицательные элементы массива
 {
     int counter = 0;
-    for (int i = 0; i < rows; ++i)
+    for (int i = 0; i < rows - 1; i++)
     {
-        for (int j = 0; j < cols; ++j)
+        for (int j = i + 1; j < cols; j++)
         {
-            if(*(arr + (rows * i + j)) > 0)
+            if(*(arr + (rows * i + j)) < 0)
                 counter++;
         }
     }
@@ -45,9 +45,9 @@ void negArr(float *arr, int rows, int cols) //ишет отрицательны�
 
 
     int l = 0;
-    for (int i = 0; i < rows; ++i)
+    for (int i = 0; i < rows - 1; i++)
     {
-        for (int j = 0; j < cols; ++j)
+        for (int j = i + 1; j < cols; j++)
         {
             if(*(arr + (rows * i + j)) < 0)   //отвечает за +-
             {
@@ -118,4 +118,3 @@ int main()
     }
     return 0;
 }
-
