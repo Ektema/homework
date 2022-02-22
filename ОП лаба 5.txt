@@ -1,0 +1,79 @@
+#include <cctype>
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+// Задание: Внести изменения в текст: слова, начинающиеся со строчной буквы пронумеровать (нумерацию с единицы начинать в каждой строке).
+
+void lowerCaseWord(string *AS, int count){
+
+    char *pieceStr;
+    pieceStr = new char[1000];    //в пис запишем разбитые слова
+
+    for(int i = 0; i < count; i++) {
+        strcpy(pieceStr, AS[i].c_str());  // из string сделал char
+
+        char* piece = strtok(pieceStr, " "); // функция для разбития char на отдельные слова
+        int k = 1;
+        while(piece != NULL) {    // процесс разбития на отдельные слова
+
+            if(islower(piece[0]) != 0) {   // если слово начинается со строчной, то выводится нумерация и запускается счетчик
+                cout << k << ")";
+                k++;
+            }
+            cout << piece << " ";
+            piece = strtok(NULL, " ");
+        }
+        cout << endl;
+    }
+    delete[] pieceStr;
+}
+
+
+
+int main()
+{
+    char buf[100];
+    string *AS;
+    string *AS2;
+    string s; // вспомогательная строка пременная
+
+    cout << "Enter strings: " << endl;
+    AS = nullptr; // нулевой указатель
+    int count = 0;
+
+    do {
+        cout << "=> ";
+        cin.getline(buf, 100, '\n');     // вводим строки
+        s = buf;    // s будем использовать дальше, чтобы записать ее значение в новый массив
+
+        if(strcmp(buf, "yes") != 0) {       // если строка не стоп слово yes, то запускается счетчик count, который дальше будет определять размер динамической памяти
+            count++;
+
+            AS2 = new string[count];   // здесь выделяем память под массив
+
+            for (int i = 0; i < count - 1; i++){ // передаем ссылки, чтобы потом творить арифметику указателей
+                AS2[i] = AS[i];
+            }
+
+            AS2[count - 1] = s;       // заполняем массив с помощью вспомогательной строкой-перменной, в которую мы раньше записали введенную строку
+
+            if (AS != nullptr){  // по условию AS указывает на память 000000 и поэтому первую итерацию пропустит
+                delete[] AS;
+            }
+
+            AS = AS2;           // в AS записываем ссылку на ячейку памяти AS2, вот и получилась арифметика указателей, теперь все, что мы ввели в хранится в AS
+        }
+    } while (strcmp(buf, "yes") != 0); // цикл будет идти пока не будет слова yes
+
+    cout << "\nArray AS:" << endl; // вывод массива
+    for (int i = 0; i < count; i++) {
+        cout << "A[" << i << "] = " << AS[i] << endl;
+    }
+
+    lowerCaseWord(AS, count);
+
+    delete[] AS;
+    return 0;
+}
